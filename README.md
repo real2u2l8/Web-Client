@@ -6,7 +6,7 @@ Web-Client는 QT 프레임워크를 사용하여 개발된 TLS 및 TCP Client �
 ## 설치 방법
 1. 이 저장소를 클론합니다:
    ```bash
-   git clone https://github.com/yourusername/Web-Client.git
+   git clone https://github.com/real2u2l8/Web-Client.git
    ```
 2. 프로젝트 디렉토리로 이동합니다:
    ```bash
