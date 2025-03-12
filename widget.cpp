@@ -7,12 +7,8 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
     this->csArg = Qt::Unchecked;
-    //signal <-> slots
-    //socket_.connected(); //Signal Func
 
-    QObject::connect(&socket_, &QAbstractSocket::connected, this, &Widget::doConnected); //2nd arg is MemberFunc pointer <<QT Style Syntax
-    QObject::connect(&socket_, &QAbstractSocket::disconnected, this, &Widget::doDisconnected);
-    QObject::connect(&socket_, &QIODevice::readyRead, this, &Widget::doReadyRead);
+    setupConnections();
 }
 
 Widget::~Widget()
@@ -20,13 +16,23 @@ Widget::~Widget()
     delete ui;
 }
 
+void Widget::setupConnections()
+{
+    //2nd arg is MemberFunc pointer <<QT Style Syntax
+    //signal <-> slots
+    //socket_.connected(); //Signal Func
+    QObject::connect(&socket_, &QAbstractSocket::connected, this, &Widget::doConnected);
+    QObject::connect(&socket_, &QAbstractSocket::disconnected, this, &Widget::doDisconnected);
+    QObject::connect(&socket_, &QIODevice::readyRead, this, &Widget::doReadyRead);
+}
+
 void Widget::doConnected()
 {
-    ui->pteMessage->insertPlainText("Connected ");
+    ui->pteMessage->insertPlainText("Connected\n\n");
 }
 void Widget::doDisconnected()
 {
-    ui->pteMessage->insertPlainText("Disconnected");
+    ui->pteMessage->insertPlainText("Disconnected\n\n");
 }
 void Widget::doReadyRead()
 {
@@ -35,10 +41,12 @@ void Widget::doReadyRead()
 
 void Widget::on_pbConnect_clicked()
 {
+    auto host = ui->leHost->text();
+    auto port = ui->lePort->text().toUShort();
     if (this->csArg == Qt::Unchecked) {
-        socket_.connectToHost(ui->leHost->text(), ui->lePort->text().toUShort()); // TCP
+        socket_.connectToHost(host, port); // TCP
     } else if (this->csArg == Qt::Checked) {
-        socket_.connectToHostEncrypted(ui->leHost->text(), ui->lePort->text().toUShort()); // SSL/TLS
+        socket_.connectToHostEncrypted(host, port); // SSL/TLS
     }
 }
 
