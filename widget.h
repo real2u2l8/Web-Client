@@ -24,6 +24,7 @@ public:
     Qt::CheckState csArg;
 
 public slots: //user defined slots
+    void setupConnections();
     void doConnected();
     void doDisconnected();
     void doReadyRead();
